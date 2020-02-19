@@ -50,12 +50,14 @@ RUN \
 	&& chmod 0777 /var/log/logger \
 	&& chmod 0777 /var/log/xdebug \
 	&& phpdismod xdebug \
+	&& echo "xdebug.default_enable=On" >> /etc/php/7.3/mods-available/xdebug.ini \
 	&& echo "xdebug.remote_enable=On" >> /etc/php/7.3/mods-available/xdebug.ini \
-	&& echo "xdebug.remote_connect_back=0" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_connect_back=Off" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.idekey=VSCODE" >> /etc/php/7.3/mods-available/xdebug.ini \
 	&& echo "xdebug.remote_autostart=On" >> /etc/php/7.3/mods-available/xdebug.ini \
-	&& echo "xdebug.remote_log=/tmp/xdebug.log" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_log=/var/log/xdebug.log" >> /etc/php/7.3/mods-available/xdebug.ini \
 	&& echo "xdebug.remote_host=10.254.254.254" >> /etc/php/7.3/mods-available/xdebug.ini \
-	&& echo "xdebug.remote_port=9000" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_port=9009" >> /etc/php/7.3/mods-available/xdebug.ini \
 	&& echo "xdebug.profiler_enable=1" >> /etc/php/7.3/mods-available/xdebug.ini \
 	&& echo "xdebug.profiler_output_dir=/var/log/xdebug" >> /etc/php/7.3/mods-available/xdebug.ini \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
