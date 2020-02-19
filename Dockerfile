@@ -33,6 +33,8 @@ RUN apt-get update -y \
     php7.3-bcmath \
     php7.3-mysql \
     php7.3-exif \
+    php-xdebug \
+    php-imagick \
     nginx \
     nginx-extras 
 
@@ -43,6 +45,20 @@ RUN \
 	# && rm -rf /etc/supervisor/* \
 	&& rm -rf /etc/nginx/sites-enabled \
     && mkdir /run/php \
+	&& mkdir -p /var/log/logger \
+	&& mkdir -p /var/log/xdebug \
+	&& chmod 0777 /var/log/logger \
+	&& chmod 0777 /var/log/xdebug \
+	&& phpdismod xdebug \
+	&& echo "xdebug.remote_enable=On" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_connect_back=0" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_autostart=On" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_log=/tmp/xdebug.log" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_host=10.254.254.254" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.remote_port=9000" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.profiler_enable=1" >> /etc/php/7.3/mods-available/xdebug.ini \
+	&& echo "xdebug.profiler_output_dir=/var/log/xdebug" >> /etc/php/7.3/mods-available/xdebug.ini \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && echo "daemon off;" >> /etc/nginx/nginx.conf
 
 COPY /etc/ /etc/

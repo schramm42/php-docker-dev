@@ -20,7 +20,14 @@ run:
     	--name $(CONTAINER_NAME) \
 		-P \
     	--restart=always \
+		-e XDEBUG=1 \
     	$(REPOSITORY)
 
 exec:
 	docker exec -it $(CONTAINER_NAME) /bin/bash
+
+cleanup:
+	@echo "Cleanup container $(CONTAINER_NAME)"
+
+	-docker stop $(CONTAINER_NAME)
+	-docker rm $(CONTAINER_NAME)
